@@ -3,7 +3,7 @@ from runner import Runner
 from runner_tournament import Tournament
 
 class RunnerTest(unittest.TestCase):
-    is_frozen = False  # Атрибут для контроля заморозки тестов
+    is_frozen = False
 
     def test_walk(self):
         runner = Runner("бегун")
@@ -35,7 +35,7 @@ class RunnerTest(unittest.TestCase):
 
 
 class TournamentTest(unittest.TestCase):
-    is_frozen = True  # Атрибут для контроля заморозки тестов
+    is_frozen = True
     all_results = {}
 
     @classmethod
