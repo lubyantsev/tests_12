@@ -8,7 +8,6 @@ def skip_if_frozen(test_case):
     @wraps(test_case)
     def wrapper(self, *args, **kwargs):
         if getattr(self, 'is_frozen', False):
-            print("Тесты в этом кейсе заморожены")
             raise unittest.SkipTest("Тесты в этом кейсе заморожены")
         return test_case(self, *args, **kwargs)
     return wrapper
@@ -41,9 +40,22 @@ class RunnerTest(unittest.TestCase):
         self.assertNotEqual(runner1.distance, runner2.distance)
 
 
+if __name__ == '__main__':
+    unittest.main()
+
+
+def skip_if_frozen(test_case):
+    @wraps(test_case)
+    def wrapper(self, *args, **kwargs):
+        if getattr(self, 'is_frozen', False):
+            raise unittest.SkipTest("Тесты в этом кейсе заморожены")
+        return test_case(self, *args, **kwargs)
+    return wrapper
+
+
 class TournamentTest(unittest.TestCase):
-    is_frozen = True  # Атрибут для TournamentTest
     all_results = {}
+    is_frozen = True  # Атрибут для заморозки тестов
 
     @classmethod
     def setUpClass(cls):
@@ -83,3 +95,4 @@ class TournamentTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
