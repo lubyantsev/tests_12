@@ -1,7 +1,5 @@
 import unittest
-from test_runner import RunnerTest
-from test_runner_tournament import TournamentTest
-
+from changed_tests import RunnerTest, TournamentTest
 
 test_suite = unittest.TestSuite()
 
