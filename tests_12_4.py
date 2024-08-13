@@ -5,8 +5,9 @@ import unittest
 logging.basicConfig(
     filename='runner_tests.log',
     level=logging.INFO,
-    encoding='utf-8',
-    format='%(levelname)s: %(message)s'  # Формат вывода с уровнем логирования и сообщением
+    mode='w',  # Режим записи
+    encoding='utf-8',  # Кодировка
+    format='%(asctime)s | %(levelname)s | %(message)s'  # Формат логирования
 )
 
 class Runner:
@@ -15,7 +16,9 @@ class Runner:
             self.name = name
         else:
             raise TypeError(f'Имя может быть только строкой, передано {type(name).__name__}')
+        
         self.distance = 0
+        
         if speed > 0:
             self.speed = speed
         else:
@@ -39,7 +42,6 @@ class Runner:
         elif isinstance(other, Runner):
             return self.name == other.name
 
-
 class RunnerTest(unittest.TestCase):
     def test_walk(self):
         try:
@@ -58,7 +60,6 @@ class RunnerTest(unittest.TestCase):
         except TypeError as e:
             logging.warning("Неверный тип данных для объекта Runner")
             logging.exception(e)
-
 
 if __name__ == '__main__':
     unittest.main()
