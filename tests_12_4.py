@@ -15,7 +15,9 @@ class Runner:
             self.name = name
         else:
             raise TypeError(f'Имя может быть только строкой, передано {type(name).__name__}')
+        
         self.distance = 0
+        
         if speed > 0:
             self.speed = speed
         else:
@@ -39,13 +41,12 @@ class Runner:
         elif isinstance(other, Runner):
             return self.name == other.name
 
-
 class RunnerTest(unittest.TestCase):
     def test_walk(self):
         try:
             runner = Runner('Baca', -5)  # Передаем отрицательное значение в speed
             runner.walk()
-            logging.info('"test_walk" выполнен успешно')
+            logging.info('\"test_walk\" выполнен успешно')
         except ValueError as e:
             logging.warning("Неверная скорость для Runner")
             logging.exception(e)
@@ -54,11 +55,10 @@ class RunnerTest(unittest.TestCase):
         try:
             runner = Runner(2)  # Передаем неверный тип (не строка) в name
             runner.run()
-            logging.info('"test_run" выполнен успешно')
+            logging.info('\"test_run\" выполнен успешно')
         except TypeError as e:
             logging.warning("Неверный тип данных для объекта Runner")
             logging.exception(e)
-
 
 if __name__ == '__main__':
     unittest.main()
