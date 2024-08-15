@@ -3,13 +3,13 @@ import logging
 from runner import Runner
 from functools import wraps
 
-# Настройка логирования
+
 logging.basicConfig(
     filename='runner_tests.log',
     level=logging.INFO,
-    encoding='utf-8',
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
+
 
 def skip_if_frozen(test_case):
     @wraps(test_case)
@@ -19,27 +19,27 @@ def skip_if_frozen(test_case):
         return test_case(self, *args, **kwargs)
     return wrapper
 
+
 class RunnerTest(unittest.TestCase):
     is_frozen = False  # Атрибут для RunnerTest
 
     @skip_if_frozen
     def test_walk(self):
         try:
-            runner = Runner("бегун", -5)  # Передаем отрицательное значение скорости
+            runner = Runner("бегун", -5)
             runner.walk()
-
-logging.info('"test_walk" выполнен успешно')
-            self.assertEqual(runner.distance, 0)  # Не должно быть изменено, так как будет выброшено исключение
+            logging.info('"test_walk" выполнен успешно')
+            self.assertEqual(runner.distance, 0)
         except ValueError:
             logging.warning("Неверная скорость для Runner")
 
     @skip_if_frozen
     def test_run(self):
         try:
-            runner = Runner(12345)  # Передаем неверный тип для имени
+            runner = Runner(12345)
             runner.run()
             logging.info('"test_run" выполнен успешно')
-            self.assertEqual(runner.distance, 0)  # Не должно быть изменено, так как будет выброшено исключение
+            self.assertEqual(runner.distance, 0)
         except TypeError:
             logging.warning("Неверный тип данных для объекта Runner")
 
