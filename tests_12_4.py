@@ -7,7 +7,7 @@ from functools import wraps
 logging.basicConfig(
     filename='runner_tests.log',
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s',
 )
 
 
