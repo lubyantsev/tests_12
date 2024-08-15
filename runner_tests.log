@@ -1,1 +1,30 @@
 
+C:\Users\Александр Лубянцев\PycharmProjects\test121> python -m unittest tests_12_4.py
+.FE
+======================================================================
+ERROR: test_walk (tests_12_4.RunnerTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Александр Лубянцев\PycharmProjects\test121\tests_12_4.py", line 19, in wrapper
+    return test_case(self, *args, **kwargs)
+  File "C:\Users\Александр Лубянцев\PycharmProjects\test121\tests_12_4.py", line 29, in test_walk
+    runner = Runner("бегун", -5)
+TypeError: __init__() takes 2 positional arguments but 3 were given
+
+======================================================================
+FAIL: test_run (tests_12_4.RunnerTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Александр Лубянцев\PycharmProjects\test121\tests_12_4.py", line 19, in wrapper
+    return test_case(self, *args, **kwargs)
+  File "C:\Users\Александр Лубянцев\PycharmProjects\test121\tests_12_4.py", line 42, in test_run
+    self.assertEqual(runner.distance, 0)
+AssertionError: 10 != 0
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.005s
+
+FAILED (failures=1, errors=1)
+
+C:\Users\Александр Лубянцев\PycharmProjects\test121>
+
