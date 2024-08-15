@@ -1,65 +1,53 @@
-import logging
 import unittest
+import logging
+from runner import Runner
+from functools import wraps
 
 # Настройка логирования
 logging.basicConfig(
     filename='runner_tests.log',
     level=logging.INFO,
-    mode='w',  # Режим записи
-    encoding='utf-8',  # Кодировка
-    format='%(asctime)s | %(levelname)s | %(message)s'  # Формат логирования
+    encoding='utf-8',
+    format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-class Runner:
-    def __init__(self, name, speed=5):
-        if isinstance(name, str):
-            self.name = name
-        else:
-            raise TypeError(f'Имя может быть только строкой, передано {type(name).__name__}')
-        
-        self.distance = 0
-        
-        if speed > 0:
-            self.speed = speed
-        else:
-            raise ValueError(f'Скорость не может быть отрицательной, сейчас {speed}')
-
-    def run(self):
-        self.distance += self.speed * 2
-
-    def walk(self):
-        self.distance += self.speed
-
-    def __str__(self):
-        return self.name
-
-    def __repr__(self):
-        return self.name
-
-    def __eq__(self, other):
-        if isinstance(other, str):
-            return self.name == other
-        elif isinstance(other, Runner):
-            return self.name == other.name
+def skip_if_frozen(test_case):
+    @wraps(test_case)
+    def wrapper(self, *args, **kwargs):
+        if getattr(self, 'is_frozen', False):
+            raise unittest.SkipTest("Тесты в этом кейсе заморожены")
+        return test_case(self, *args, **kwargs)
+    return wrapper
 
 class RunnerTest(unittest.TestCase):
+    is_frozen = False  # Атрибут для RunnerTest
+
+    @skip_if_frozen
     def test_walk(self):
         try:
-            runner = Runner('Baca', -5)  # Передаем отрицательное значение в speed
+            runner = Runner("бегун", -5)  # Передаем отрицательное значение скорости
             runner.walk()
-            logging.info('"test_walk" выполнен успешно')
-        except ValueError as e:
-            logging.warning("Неверная скорость для Runner")
-            logging.exception(e)
 
+logging.info('"test_walk" выполнен успешно')
+            self.assertEqual(runner.distance, 0)  # Не должно быть изменено, так как будет выброшено исключение
+        except ValueError:
+            logging.warning("Неверная скорость для Runner")
+
+    @skip_if_frozen
     def test_run(self):
         try:
-            runner = Runner(2)  # Передаем неверный тип (не строка) в name
+            runner = Runner(12345)  # Передаем неверный тип для имени
             runner.run()
             logging.info('"test_run" выполнен успешно')
-        except TypeError as e:
+            self.assertEqual(runner.distance, 0)  # Не должно быть изменено, так как будет выброшено исключение
+        except TypeError:
             logging.warning("Неверный тип данных для объекта Runner")
-            logging.exception(e)
 
-if __name__ == '__main__':
-    unittest.main()
+    @skip_if_frozen
+    def test_challenge(self):
+        runner1 = Runner("бегун 1")
+        runner2 = Runner("бегун 2")
+        for _ in range(10):
+            runner1.run()
+            runner2.walk()
+        self.assertNotEqual(runner1.distance, runner2.distance)
